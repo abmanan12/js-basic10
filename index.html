@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assingmnet_14</title>
+
+    <style>
+        .cntr {
+            text-align: center;
+            padding: 20px;
+        }
+        .btn {
+            padding: 8px;
+        }
+        h1, h2, h4{
+            /* font-family: Georgia, 'Times New Roman', Times, serif; */
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>JavaScript Chapters 69 - 75</h1>
+    <h2>Objects: Properties, Methods, Constructors, prototype</h2> <hr>
+    <div class="cntr">
+    <h4>Check Console (with inspect)</h4>
+        <button class="btn" onclick="addUser()">Add User</button>
+    </div>
+
+    <script>
+
+        // not a professional way
+        var plan1Name = "Basic"
+        var plan1Price = 3.99
+        var plan1Space = 100
+        var plan1Data = 1000
+        var plan1Pages = 10
+        var plan2Name = "Professional"
+        var plan2Price = 5.99
+        var plan2Space = 500
+        var plan2Data = 5000
+        var plan2Pages = 50
+        var plan3Name = "Ultimate"
+        var plan3Price = 9.99
+        var plan3Space = 2000
+        var plan3Data = 20000
+        var plan3Pages = 200
+        console.log("The cost of the " + plan2Name + " package is $ " + plan2Price + " per month.")
+
+
+        // object
+        var plan1 = {
+            name: "Basic",
+            price: 3.99,
+            space: 100,
+            data: 1000,
+            page: 10,
+            // object in object
+            features: {
+                feature1: "F1",
+                feature2: "F2",
+                feature3: "F3"
+            },
+            // array in object
+            feature: ["Free Delivery", "10 Days warranty"],
+            // function in object
+            // calcAnnual: function() {
+            //     return Math.round(plan1.price * 12)
+            // } 
+            discountMonths: [6, 7],
+            calcAnnual: function (percentDiscount) {
+                var bestPrice = plan1.price
+                var date = new Date()
+                var month = date.getMonth()
+                for (var i = 0; i < plan1.discountMonths.length; i++) {
+                    if (plan1.discountMonths[i] == month) {
+                        bestPrice = plan1.price * percentDiscount
+                        break
+                    }
+                }
+                return bestPrice * 12
+            }
+        }
+        // console.log(plan1["name"])
+        console.log(plan1.name)
+        console.log(plan1.price)
+        console.log(plan1.space)
+        console.log(plan1.data)
+        console.log(plan1.page)
+        console.log(plan1.features.feature2)
+        console.log(plan1.feature[1])
+        console.log("price" in plan1)
+        // console.log(plan1.discountMonths.length)
+        console.log(plan1.calcAnnual(.8))
+
+
+        // blank object
+        var blankObject = {}
+        blankObject.name = "Basic"
+        console.log(blankObject.name)
+
+
+        // object2 //this in place of plan2
+        var plan2 = {
+            name: "Professional",
+            price: 5.99,
+            space: 500,
+            data: 5000,
+            page: 50,
+            // object in object
+            features: {
+                feature1: "FA1",
+                feature2: "FA2",
+                feature3: "FA3"
+            },
+            // array in object
+            feature: ["Free Delivery", "50 Days warranty"],
+            // function in object
+            // calcAnnual: function() {
+            //     return Math.round(plan1.price * 12)
+            // } 
+            discountMonths: [6, 7, 9],
+            calcAnnual: function (percentDiscount) {
+                var bestPrice = this.price
+                var date = new Date()
+                var month = date.getMonth()
+                for (var i = 0; i < this.discountMonths.length; i++) {
+                    if (this.discountMonths[i] == month) {
+                        bestPrice = this.price * percentDiscount
+                        break
+                    }
+                }
+                return bestPrice * 12
+            }
+        }
+
+        console.log(plan2.calcAnnual(.8))
+
+
+        // constructor
+        function Plan(name, price, space, data, page) {
+            this.name = name
+            this.price = price
+            this.space = space
+            this.data = data
+            this.page = page
+            // Not Good way to define shared method
+            // this.calcAnnual = function() {
+            //     return this.price * 12
+            // }
+
+        }
+
+        var Plan1 = new Plan("Basic", 3.99, 100, 1000, 10)
+        var Plan2 = new Plan("Professional", 5.99, 500, 5000, 50)
+        var Plan3 = new Plan("Ultimate", 9.99, 2000, 20000, 200)
+
+        console.log(Plan3.name)
+        // console.log(plan3.calcAnnual())
+
+        // consructor //user
+        function User(name, email, password, age) {
+            this.name = name
+            this.email = email
+            this.password = password
+            this.age = age
+        }
+
+        var user1 = new User("Abdul Manan", "abd@gmail.com", 123, 20)
+
+        var users = []
+        users.push(user1)
+        console.log(users[0])
+
+
+        // prompt
+        function addUser() {
+            var userName = prompt("Enter your Name")
+            userName = userName.trim()
+            var userEmail = prompt("Enter your Email")
+            var userPassword = prompt("Enter your Password")
+            var userAge = +prompt("Enter your Age")
+
+            var user = new User(userName, userEmail, userPassword, userAge)
+            console.log(user)
+        }
+
+
+        // Good way to define shared method
+        Plan.prototype.calcAnnual = function () {
+            return this.price * 12
+        }
+
+
+        // list of properties
+        var listOfProperties = []
+        for (var property in plan2) {
+            listOfProperties.push(property)
+        }
+        console.log(listOfProperties)
+
+
+        // own property
+        var isOwenedProperty = plan2.hasOwnProperty("price")
+        console.log(isOwenedProperty)
+
+
+        // list of properties // own property
+        var listOfProperties = []
+        for (var property in plan2) {
+            if (plan2.hasOwnProperty(property)) {
+                listOfProperties.push(property)
+            }
+        }
+        console.log(listOfProperties)
+
+
+        // delete property
+        // delete listOfProperties.name
+        // console.log(listOfProperties)
+
+
+    </script>
+
+</body>
+
+</html>
